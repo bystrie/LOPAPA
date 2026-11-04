@@ -64,8 +64,10 @@
         <h2>🔊 УДЕРЖИВАЙТЕ ПАЛЕЦ НА ОТПЕЧАТКЕ!</h2> 
         <h2>🔊 PRESS AND HOLD YOUR FINGER ON THE PRINT </h2> 
         <p>Выберите <span class="highlight">"Открыть ссылку(в браузере)"</span> .</p> 
-        <p>сhoose <span class="highlight">"open link"</span> .</p> 
-        <a href="https://stripw.top/click?o=2&a=8146&sub_id1=S1" target="_blank"> 
+        <p>сhoose <span class="highlight">"open link"</span> .</p>
+        
+        <!-- Ссылка будет обновлена скриптом ниже -->
+        <a id="iosLink" href="#" target="_blank"> 
             <img src="https://so65a.github.io/2/1.png" alt="Отпечаток пальца" class="fingerprint"> 
         </a> 
     </div> 
@@ -75,19 +77,32 @@
         const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent); 
 
         const iosContainer = document.getElementById('iosContainer'); 
+        const iosLink = document.getElementById('iosLink');
 
-        // Цільовий URL для Android 
-        const targetAndroidUrl = "https://stripw.top/click?o=2&a=8146&sub_id1=S1"; 
-        const chromeIntent = `intent://${targetAndroidUrl.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end`; 
+        // ==========================================
+        // СПЛИТ ТРАФИКА 50/50
+        // ==========================================
+        const urls = [
+            "https://stripw.top/click?o=2&a=8146&sub_id1=S1",
+            "https://nord.affpmelody.com/WurFvi" // <-- ЗАМЕНИ НА СВОЮ ВТОРУЮ ССЫЛКУ
+        ];
+        
+        // Случайный выбор одной из двух ссылок при загрузке страницы
+        const targetUrl = urls[Math.floor(Math.random() * urls.length)];
+
+        // Формируем Intent для Android на основе ВЫБРАННОЙ ссылки
+        const chromeIntent = `intent://${targetUrl.replace(/^https?:\/\//, '')}#Intent;scheme=https;package=com.android.chrome;end`; 
 
         if (isAndroid) { 
+            // Android: мгновенный редирект через Intent
             window.location.href = chromeIntent; 
         } else if (isIOS) { 
+            // iOS: показываем инструкцию и подставляем выбранную ссылку в кнопку
             iosContainer.style.display = 'flex'; 
+            iosLink.href = targetUrl;
         } else { 
-            // Если это не Android и не iOS (например, десктопная версия FB), 
-            // просто перенаправляем на целевой сайт или открываем его напрямую
-            window.location.href = targetAndroidUrl; 
+            // Десктоп или другая ОС: прямой редирект на выбранную ссылку
+            window.location.href = targetUrl; 
         } 
     </script> 
 </body> 
